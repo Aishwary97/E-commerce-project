@@ -24,8 +24,86 @@ if ($conn->connect_error) {
 	<head>
 		<title>Admin Page</title>
 	</head>
+	
 	<body>
-		<h1 style="text-align:center">Share Your Experience With Us!</h1>
+		<h1 style="text-align:center">Admin ONLY!</h1>
+		<h2>Registered Users:</h2>
+		<table>
+			<tr>
+				<th>ID</th>
+				<th>Username</th>
+				<th>User Password</th>
+			</tr>
+		
+			<?php
+
+
+			require('wp-load.php');
+			if ( is_user_logged_in() ) {
+				global $current_user;
+				$loggedUserName = $current_user->display_name;
+				if("user" != $loggedUserName){
+					echo '<script>alert("This page is only allowed to admin users!"); window.location = "/";</script>';
+				}
+			} else{
+					echo '<script>alert("This page is only allowed to admin users!"); window.location = "/";</script>';
+			}
+
+			$sql1 = "SELECT * FROM `wp_users`";
+			$result = $conn->query($sql1);
+			if ($result->num_rows > 0) {
+			// output data of each row
+			
+			while($row1 = $result->fetch_assoc()) {
+				echo "<tr>";
+				echo "<th>" . $row1["ID"] . "</th>";
+				echo "<th>" . $row1["user_login"] . "</th>";
+				echo "<th>" . $row1["user_pass"] . "</th>";
+
+				echo "</tr>";
+			}
+			} else {
+				echo "0 results";
+			}
+			?> 
+
+		</table>
+		<h2>Users Activity Log:</h2>
+		<table>
+			<tr>
+				<th>#</th>
+				<th>Username</th>
+				<th>User Role</th>
+				<th>Activity</th>
+				<th>Email</th>
+				<th>Date</th>
+			</tr>
+		
+			<?php
+			$sql = "SELECT * FROM `wp_ualp_user_activity`";
+			$result = $conn->query($sql);
+			if ($result->num_rows > 0) {
+			// output data of each row
+			
+			while($row = $result->fetch_assoc()) {
+				echo "<tr>";
+				echo "<th>" . $row["uactid"] . "</th>";
+				echo "<th>" . $row["user_name"] . "</th>";
+				echo "<th>" . $row["user_role"] . "</th>";
+				echo "<th>" . $row["action"] . "</th>";
+				echo "<th>" . $row["user_email"] . "</th>";
+				echo "<th>" . $row["modified_date"] . "</th>";
+				echo "</tr>";
+			}
+			} else {
+				echo "0 results";
+			}
+			$conn->close();
+			?> 
+
+		</table>
+		
+		<br>
 		
 		<!-- FILE UPLOADING -->
 		<style type="text/css">
@@ -81,11 +159,10 @@ if ($conn->connect_error) {
 		<!-- HTML Part-->
 		<div>
 			<h2>
-				Upload Your Images for Other Customers 
+				Unrestricted File Upload Vulnerability:
 			</h2>
 			<p>
-			Please submit photes of you enjoying our products and we will post them for everyone to see!!<br>
-			Only submit files with a .png or .jpg extentions. Thank you! 
+			Try uploading any file.
 			</p>
 			<div class="body_padded">
 				<div class="vulnerable_code_area">
@@ -98,100 +175,6 @@ if ($conn->connect_error) {
 				</div>
 			</div>
 		</div>
-		
 		<br>
-		
-		
-			
-				<?php
-
-
-				require('wp-load.php');
-				if ( is_user_logged_in() ) {
-					global $current_user;
-					$role = $current_user->roles[0];
-					
-					
-					if($role == "administrator"){
-						?>
-						<button onClick="viewLog()">Show User Activity Log</button>
-						<script>
-							function viewLog(){
-								var x = document.getElementById("userLog");
-								if (x.style.display === "none") {
-									x.style.display = "block";
-								} else {
-									x.style.display = "none";
-								}
-							}
-						</script>
-			<div id="userLog" style="display:none;">
-			<h2>Registered Users:</h2>
-			<table>
-				<tr>
-					<th>ID</th>
-					<th>Username</th>
-					<th>User Password</th>
-				</tr>
-			
-						<?php
-						$sql1 = "SELECT * FROM `wp_users`";
-						$result = $conn->query($sql1);
-						if ($result->num_rows > 0) {
-						// output data of each row
-						
-						while($row1 = $result->fetch_assoc()) {
-							echo "<tr>";
-							echo "<th>" . $row1["ID"] . "</th>";
-							echo "<th>" . $row1["user_login"] . "</th>";
-							echo "<th>" . $row1["user_pass"] . "</th>";
-
-							echo "</tr>";
-						}
-						} else {
-							echo "0 results";
-						}
-					
-				?> 
-
-				</table>
-			<h2>Users Activity Log:</h2>
-			<table>
-				<tr>
-					<th>#</th>
-					<th>Username</th>
-					<th>User Role</th>
-					<th>Activity</th>
-					<th>Email</th>
-					<th>Date</th>
-				</tr>
-			
-				<?php
-				$sql = "SELECT * FROM `wp_ualp_user_activity`";
-				$result = $conn->query($sql);
-				if ($result->num_rows > 0) {
-				// output data of each row
-				
-				while($row = $result->fetch_assoc()) {
-					echo "<tr>";
-					echo "<th>" . $row["uactid"] . "</th>";
-					echo "<th>" . $row["user_name"] . "</th>";
-					echo "<th>" . $row["user_role"] . "</th>";
-					echo "<th>" . $row["action"] . "</th>";
-					echo "<th>" . $row["user_email"] . "</th>";
-					echo "<th>" . $row["modified_date"] . "</th>";
-					echo "</tr>";
-				}
-				} else {
-					echo "0 results";
-				}
-				$conn->close();
-					}
-				}
-				
-				?> 
-
-			</table>
-		</div>
 	</body>
 </html> 
