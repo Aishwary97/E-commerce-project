@@ -22,8 +22,8 @@ Used [User Activity Plugin](https://wordpress.org/plugins/user-activity-log/) by
 1. Download the plugin file and unzip it.
 2. Upload the `uplogger` folder to the `wp-content/plugins/` folder.
 3. Activate the "UpLogger" plugin from plugin page on wordpress admin area.
-4. Upload the `adminpage-vul.php` and `FileUpload_vulnerable.php` files to the `/apps/wordpress/htdocs` folder.
-5. In the `adminpage-vul.php` file, insert your Wordpress application password.
+4. Upload the `adminpage.php` and `FileUpload_Non.php` files to the `/apps/wordpress/htdocs` folder.
+5. In the `adminpage.php` file, insert your Wordpress application password.
 
 ----------------
 ### Screenshots 
